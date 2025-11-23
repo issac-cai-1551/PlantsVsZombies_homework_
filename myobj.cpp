@@ -70,11 +70,11 @@ void MyObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
     Q_UNUSED(option);
     Q_UNUSED(widget);
     //测试代码
-    painter->setPen(Qt::white);
-    painter->drawRect(boundingRect());
+    // painter->setPen(Qt::white);
+    // painter->drawRect(boundingRect());
     //绘制碰撞区域（红色边框）
-    painter->setPen(Qt::red);
-    painter->drawPath(shape());
+    // painter->setPen(Qt::red);
+    // painter->drawPath(shape());
 
     int w = 50;
     int h = 50;

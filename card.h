@@ -11,14 +11,14 @@
 
 //:/res/GameRes/images/Card.png
 enum class PlantType{
-    None,
     PEASHOOTER,
     SUNLIGHT,
     WALLNUT,
     CHEERYBOMB,
     POTATOMINE,
     SNOWPEASHOOTER,
-    ScaredyShroom
+    ScaredyShroom,
+    None//None可以用来计数
 };
 
 class Card: public QGraphicsObject

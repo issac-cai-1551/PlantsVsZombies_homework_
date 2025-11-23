@@ -266,5 +266,6 @@
         <file>GameRes/images/FlagMeterEmpty.png</file>
         <file>GameRes/images/FlagMeterParts1.png</file>
         <file>GameRes/images/FlagMeterParts2.png</file>
+        <file>GameRes/images/scarysan_small.png</file>
     </qresource>
 </RCC>

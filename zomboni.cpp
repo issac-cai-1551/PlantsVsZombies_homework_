@@ -141,7 +141,7 @@ QPainterPath Zomboni::shape() const
     // 冰车碰撞箱，比普通僵尸大
     // 假设中心为原点，向左延伸（车头），向下延伸（车身）
     // 根据图片大概估算
-    path.addRect(-100, -40, 50, 80);
+    path.addRect(-100, -10, 50, 90);//
     return path;
 }
 

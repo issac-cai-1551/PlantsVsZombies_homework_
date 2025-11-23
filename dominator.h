@@ -38,9 +38,11 @@ public:
     void setDialog(QString info,const QVector<QString>& btnStrs = QVector<QString>(),const QVector<int>& btnIds = QVector<int>());//显示要说的话
     void hideDialog();//隐藏对话框
     void ZombieGenerate(ZombieType zombieType,int row,int x);//召唤僵尸
+    void ZombieGenerate(QList<QPointF> poses);//召唤僵尸
     void wipeZombie(QPointF pos,int num=1);//移除僵尸,默认移除1个
-    void plant(enum PlantType plantype,int r,int c);//种植植物
-    void uproot(int r,int c);//铲除植物
+    void wipeZombie(QList<QPointF> poses);//多位置移除僵尸
+    bool plant(enum PlantType plantype,int r,int c);//种植植物
+    bool uproot(int r,int c);//铲除植物,bool 返回是否成功
     void stealSunlight(int num);//偷取阳光
     void stealSunlight(int num,int eachVal);//有动画效果，生成num个阳光，每个阳光的值为-eachVal
     void giveSunlight(int num);//给予阳光
@@ -54,10 +56,25 @@ public:
     //加强植物
     void setPlantSpeedRate(qreal rate,int r,int c);//改变（r,c)位置的植物攻速
     void setPlantPowerRate(qreal rate,int r,int c);//改变（r,c)位置的植物威力
+    //献祭植物
+    bool sacrifyPlant(PlantType planttype);
+    //
+    void gameOver();//处理游戏结束结局
+
 
     //随机游走
     void randomWalk();
     void stopRandomWalk();//停止随机游走
+
+    //长线计划函数和变量，即dominator对游戏出现长期影响
+    //每波进行阳光偷取
+    int sunlightTax;//每波阳光税，默认为零
+
+
+    //辅助函数
+    PlantType getSacrificedFromBtnId(int btnId);//通过btnId得到献祭植物
+    PlantType getRandomPlantType();//获得随机植物类型
+
 
 signals:
     void branchTriggered(int id);

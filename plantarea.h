@@ -58,7 +58,7 @@ public:
     int c(){return col;}
     //
     bool checkEmpty(){return isEmpty;}
-    void removePlant();
+    bool removePlant();
     //设置该地方是否能种,以及覆盖物
     void setPlantable(bool plantable,QString coverage);
     //向外界提供该地植物指针
@@ -83,7 +83,7 @@ protected:
 
     //
 public:
-    void plant(enum PlantType plantType);//种植植物的接口
+    bool plant(enum PlantType plantType);//种植植物的接口
 };
 
 #endif // PLANTAREA_H
