@@ -15,6 +15,10 @@ public:
     // 设置当前冰车的自我召唤概率
     void setMySelfSummonProbability(int prob);
 
+    // 调整HP和速度
+    void reduceHP(double rate);
+    void reduceSpeed(double rate);
+
 protected:
     // 僵尸行为特征
     void Action(Plant *plant) override;

@@ -25,6 +25,7 @@
 #include<QSettings>
 #include"settingsmenu.h"
 #include"gameleveldata.h"
+#include "flagmeter.h"
 
 #include<QGraphicsSceneMouseEvent>
 #include "coordinate.h"
@@ -40,6 +41,7 @@ class GameScene : public QGraphicsScene
     SettingsMenu *settingsMenu;
     //
     GameLevelData* levelData;
+    FlagMeter* flagMeter;
 
     //archive
     QSettings *settings;

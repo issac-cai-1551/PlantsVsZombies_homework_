@@ -46,8 +46,13 @@ public:
     // 冰车僵尸的难度设置
     int zomboniSummonInterval; // 召唤间隔 (ms)
     int zomboniSelfSummonProb; // 自我召唤概率 (0-100)
+    double zomboniHPRate; // 冰车HP倍率
+    double zomboniSpeedRate; // 冰车速度倍率
 
-    void setZomboniDifficulty(int interval, int selfProb);
+    void setZomboniInterval(int interval);
+    void setZomboniProb(int selfProb);
+    void setZomboniHPRate(double rate);
+    void setZomboniSpeedRate(double rate);
 
     QList<ZombieData> zombieData;//各类僵尸信息
 

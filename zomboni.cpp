@@ -8,11 +8,11 @@ Zomboni::Zomboni()
     : Zombie(":/res/GameRes/images/Zombies/Zomboni/0.gif",
              ZombieType::Zomboni,
              "",
-             29999, // HP
-             29,   // Speed
+             49999, // HP
+             10,   // Speed
              10000), // Attack Power (秒杀)
       mySummonInterval(10000), // 默认10秒
-      mySelfSummonProbability(100) // 默认0%
+      mySelfSummonProbability(0) // 默认0%
 {
     // 冰车僵尸通常免疫减速（可选实现，这里先保留默认行为）
     
@@ -35,6 +35,18 @@ void Zomboni::setMySelfSummonProbability(int prob)
     if (prob < 0) prob = 0;
     if (prob > 100) prob = 100;
     mySelfSummonProbability = prob;
+}
+
+void Zomboni::reduceHP(double rate)
+{
+    // 调整最大HP和当前HP
+    currentHp = currentHp * rate;
+}
+
+void Zomboni::reduceSpeed(double rate)
+{
+    // 调整速度
+    speed = speed * rate;
 }
 
 Zomboni::~Zomboni()
@@ -185,7 +197,7 @@ void Zomboni::summonZombies()
         ZombieType::BucketZombie,
         ZombieType::ConeZombie,
         ZombieType::FootballZombie,
-        ZombieType::Zomboni
+        //ZombieType::Zomboni 暂不用
     };
 
     for (int i = 0; i < count; ++i) {
@@ -203,6 +215,8 @@ void Zomboni::summonZombies()
             int typeIndex = QRandomGenerator::global()->bounded(validTypes.size());
             randomType = validTypes[typeIndex];
         }
+
+        x += QRandomGenerator::global()->bounded(-10,10); //随机偏移
 
         // 调用 GameScene 的 ZombieGenerate
         // 注意：ZombieGenerate(type, row, x) 会设置位置为 (x, 100 + 94*row)

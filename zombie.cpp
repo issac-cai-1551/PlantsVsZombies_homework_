@@ -198,6 +198,21 @@ void Zombie::setSpeed(double rate,int duration){
     });
 
 }
+
+void Zombie::setSlow(bool slow) {
+    if (isSlowed == slow) return; // 状态未改变，直接返回
+    isSlowed = slow;
+    if (isSlowed) {
+        speed = speed * 0.8; // 减速20%
+    } else {
+        speed = speed / 0.8; // 恢复速度
+    }
+    // 更新动画速度
+    if (movable) {
+        Animate(this).speed(AnimationType::Move, CurrentSpeedRate * speed).move(QPointF(-900, 0));
+    }
+}
+
 //81 94
 void Zombie::changeRow(enum Direction dir){
 

@@ -8,7 +8,7 @@ GameLevelData::GameLevelData():
     sunProb(20),
     backgroundImage(":/res/GameRes/images/Background.jpg"),
     backgroundMusic("qrc:/res/GameRes/audio/UraniwaNi.mp3"),//必须是url
-    mowerRow({ 1, 1, 1, 1, 1, 1 }),
+    mowerRow({ 1, 1, 1, 1, 1, 1 }), 
     hasShovel(true),
     maxSelectedCards(8),
     waveNum(5),
@@ -17,7 +17,9 @@ GameLevelData::GameLevelData():
     waveLimits({10,15,20,25,35}),
     map(5,QList<int>(9,0)),
     zomboniSummonInterval(10000), // 默认10秒
-    zomboniSelfSummonProb(0)      // 默认0%
+    zomboniSelfSummonProb(0),      // 默认0%
+    zomboniHPRate(1.0), // 默认100%
+    zomboniSpeedRate(1.0) // 默认100%
 {
 
 }
@@ -133,8 +135,22 @@ GameLevelData *GameLevelDataFactory(const QString &eName)
 }
 
 //此接口预留来设置冰车僵尸难度(时间间隔，生成自身的概率)
-void GameLevelData::setZomboniDifficulty(int interval, int selfProb)
+void GameLevelData::setZomboniInterval(int interval)
 {
     zomboniSummonInterval = interval;
+}
+
+void GameLevelData::setZomboniProb(int selfProb)
+{
     zomboniSelfSummonProb = selfProb;
+}
+
+void GameLevelData::setZomboniHPRate(double rate)
+{
+    zomboniHPRate = rate;
+}
+
+void GameLevelData::setZomboniSpeedRate(double rate)
+{
+    zomboniSpeedRate = rate;
 }

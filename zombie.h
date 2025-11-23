@@ -24,6 +24,7 @@ public:
     void getSnowPea(int power);
 
     void setSpeed(double rate,int duration);
+    void setSlow(bool slow); // 设置是否减速
     void changeRow(enum Direction dir);
     //
     //给外界的信息
@@ -58,6 +59,7 @@ protected:
     QGraphicsPixmapItem *secondaryGifItem;
     QGraphicsColorizeEffect *hitEffect;//受伤效果
     int slowEffect;//减速效果
+    bool isSlowed = false; // 是否处于护眼模式减速状态
 
 
 
