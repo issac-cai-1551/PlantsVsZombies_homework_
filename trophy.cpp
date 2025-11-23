@@ -47,7 +47,7 @@ void Trophy::mousePressEvent(QGraphicsSceneMouseEvent *event)
         // 点击后自动匀速放大
         // 使用 Animate 类，设置一个较大的目标缩放值和较长的持续时间
         // 例如：在 5 秒内放大到 20 倍
-        Animate(this).duration(AnimationType::Scale, 5000).scale(30.0).finish(AnimationType::Scale, [=](){
+        Animate(this).duration(AnimationType::Scale, 5000).scale(20.0).finish(AnimationType::Scale, [=](){
             emit GameOver();
         });
         

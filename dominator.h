@@ -42,18 +42,19 @@ public:
     void giveSunlight(int num);//给予阳光
     void giveSunlight(int num,int eachVal);//有动画效果，生成num个阳光，每个阳光的值为eachVal
     void setCoverage();//类似于护眼模式
-    void unPlantabel(QPointF pos,QString path);//使某个地方无法种植,path 是无法种植地方覆盖物的图片路径
+    void setPlantabel(bool plantable,int r,int c,QString path);//使某个地方无法/可以种植,path 是无法种植地方覆盖物的图片路径
     //小推车
     void releaseMower(int r);
     void addMower(int r);
+    //加强植物
+    void setPlantSpeedRate(qreal rate,int r,int c);//改变（r,c)位置的植物攻速
+    void setPlantPowerRate(qreal rate,int r,int c);//改变（r,c)位置的植物威力
     //
     void gameOver();//处理游戏结束结局
 
-    //模拟用户行为
     //随机游走
     void randomWalk();
     void stopRandomWalk();//停止随机游走
-    void simulateDrag(QPointF pos,QPointF toPos,QPixmap pixmap);//模拟拖拽
 
 
 

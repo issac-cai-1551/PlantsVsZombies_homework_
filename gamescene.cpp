@@ -262,7 +262,7 @@ void GameScene::GameStart(){
     //plantarea
     PlantAreaGenerate();
     //mower
-    // mowerGenerate();//暂时注释，调试完放回
+    mowerGenerate();//暂时注释，调试完放回
 
     //zombie generate
     // ZombieGenerate();
@@ -332,15 +332,32 @@ void GameScene::mowerGenerate(){
         QList MowerRow = levelData->mowerRow;
         //Mower
         if(MowerRow[i]==1){
-            Mower *mower = new Mower();
-            mowers.insert(i,mower);//加入mower
-            mower->setPos(QPointF(150 +105 ,120) + QPointF(-20 ,94*i));
-            mower->setZValue(-1);
-            addItem(mower);
-            connect(this,&GameScene::GameOver,mower,&MyObject::GameOver);
+            mowerGenerate(i);
         }
     }
 
+}
+void GameScene::mowerGenerate(int r){
+    if(!mowers.contains(r))
+    {
+        Mower *mower = new Mower();
+        mowers.insert(r,mower);//加入mower
+        mower->setPos(QPointF(150 +105 ,120) + QPointF(-20 ,94*r));
+        mower->setZValue(-1);
+        addItem(mower);
+        connect(this,&GameScene::GameOver,mower,&MyObject::GameOver);
+    }
+}
+//移除小推车
+void GameScene::releaseMower(int r){
+    if(mowers.contains(r))
+    {
+        Mower *mower = mowers[r];
+        if(mower){
+            mower->releaseMower();//使mower开动
+        }
+        mowers.remove(r);//移除map
+    }
 }
 //生成种植地
 void GameScene::PlantAreaGenerate(){
@@ -510,7 +527,7 @@ void GameScene::ZombieGenerate(int currwave){
         int showTime = QRandomGenerator::global()->bounded(6,levelData->waveDuration[currwave]);
         //将僵尸生存时间分开
         QTimer::singleShot(showTime*1000,this,[=](){
-            ZombieGenerate(zombies[i],row,this->width()+200);
+            ZombieGenerate(zombies[i],row,this->width()+130);
         }) ;
     }
 }
@@ -634,7 +651,7 @@ void GameScene::showPlayerWon(){
     // 播放胜利音乐
     playSoundEffect("qrc:/res/GameRes/audio/winmusic.mp3");
 
-    // 清除所有僵尸（可选，或者定住它们）
+    // 清除所有僵尸
     emit GamePause();
 
     // 创建奖杯

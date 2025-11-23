@@ -10,7 +10,7 @@ Peashooter::Peashooter(QGraphicsObject *parent)
     //单独的射程检测区域（仅用于检测僵尸，不影响物理碰撞）
     m_detectTimer = new QTimer();
 
-    m_detectArea = new QGraphicsRectItem(0,0,700,50,this);
+    m_detectArea = new QGraphicsRectItem(0,-20,700,50,this);
 
 
     m_detectArea->setOpacity(0); // 设为透明不可见
@@ -19,7 +19,7 @@ Peashooter::Peashooter(QGraphicsObject *parent)
     m_detectArea->setAcceptedMouseButtons(Qt::NoButton);
     m_detectArea->setEnabled(false);
 
-    // 3. 监听检测区域的碰撞（仅用于检测僵尸进入）
+    //监听检测区域的碰撞（仅用于检测僵尸进入）
     connect(m_detectTimer, &QTimer::timeout, this, [=](){
         // 仅检测“射程区域”内的碰撞（m_detectArea是专门的检测区域）
         QList<QGraphicsItem*> inRangeItems = m_detectArea->collidingItems();
@@ -27,10 +27,11 @@ Peashooter::Peashooter(QGraphicsObject *parent)
             MyObject *zombie = dynamic_cast<MyObject*>(*it);//如果能转化，说明时僵尸
             if ( zombie && zombie->getObjType() == Type::ZOMBIE) {
                 emit findZombie(zombie);
+                break;//发现后发送一次，避免连发
             }
         }
     });
-    m_detectTimer->start(1500);
+    m_detectTimer->start(1500);//1.5 s 检查一次，相当与每1.5 s攻速
     //
     Peashooter::plantAction();
 }
@@ -40,9 +41,10 @@ void Peashooter::plantAction(){
     connect(this,&Plant::findZombie,this,[=](MyObject *zombie){
 
         if(scene() && Bullet::bulletNum<Bullet::delNum+200){
-            Bullet *bullet = new Bullet(":/res/GameRes/images/Pea.png",100*bulletPowerRate);
+            Bullet *bullet = new Bullet(":/res/GameRes/images/Plants/PB00.gif",100*bulletPowerRate);
             connect(this,&MyObject::GameOver,bullet,&MyObject::GameOver);
             bullet->setPos(this->scenePos()+QPointF(40,-20));
+            bullet->setBombGif(":/res/GameRes/images/Plants/PeaBulletHit.gif");
             Animate(bullet).speed(AnimationType::Move,bullet->getSpeed()*bulletSpeedRate).move(QPointF(900,0));
             scene()->addItem(bullet);
         }

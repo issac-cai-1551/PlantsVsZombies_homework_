@@ -69,6 +69,7 @@ protected:
     const QString objPath;
     QString CurrentGif;
     bool isDead;//判断是否死亡
+    int getFrameCnt();
     //
     void ToCurrentGif();
 

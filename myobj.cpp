@@ -41,6 +41,12 @@ MyObject::MyObject(QGraphicsObject *parent,QString objPath,const enum Type type)
     // 构造函数实现
 
 }
+int MyObject::getFrameCnt(){
+    if(movie && movie->isValid()){
+        return movie->frameCount();
+    }
+}
+
 GameScene* MyObject::getGameScene(){
     gameScene = dynamic_cast<GameScene*>(this->scene());
     if(!gameScene){

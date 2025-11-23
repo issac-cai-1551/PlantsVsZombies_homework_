@@ -36,7 +36,8 @@ Card::Card(QGraphicsObject *parent, QString plantpath)
 
     if(plantName == "Peashooter"){
         plantType = PlantType::PEASHOOTER;
-        sunlightCost = 150;
+        sunlightCost = 100;
+        cooldownTime = 2000;
     }
     else if(plantName == "SunFlower"){
         plantType = PlantType::SUNLIGHT;
@@ -57,6 +58,11 @@ Card::Card(QGraphicsObject *parent, QString plantpath)
     else if(plantName == "SnowPea"){
         plantType = PlantType::SNOWPEASHOOTER;
         sunlightCost = 200;
+    }
+    else if(plantName == "ScaredyShroom"){
+        plantType = PlantType::ScaredyShroom;
+        sunlightCost = 25;
+        cooldownTime = 2000;
     }
     else {
         plantType = PlantType::PEASHOOTER;

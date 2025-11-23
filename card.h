@@ -17,7 +17,8 @@ enum class PlantType{
     WALLNUT,
     CHEERYBOMB,
     POTATOMINE,
-    SNOWPEASHOOTER
+    SNOWPEASHOOTER,
+    ScaredyShroom
 };
 
 class Card: public QGraphicsObject

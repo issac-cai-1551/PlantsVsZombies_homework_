@@ -29,6 +29,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core)
 
     qt_add_executable(Game
         MANUAL_FINALIZATION
@@ -76,6 +77,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
         zomboni.cpp
         zomboni.cpp
         zomboni.h
+        scaredyshroom.h scaredyshroom.cpp
 
 
     )
@@ -106,6 +108,7 @@ target_link_libraries(Game PRIVATE Qt6::Widgets)
 target_link_libraries(Game PRIVATE Qt6::Core)
 target_link_libraries(Game PRIVATE Qt6::Core)
 target_link_libraries(Game PRIVATE Qt6::Core Qt6::Widgets)
+target_link_libraries(Game PRIVATE Qt6::Core)
 target_link_libraries(Game PRIVATE Qt6::Core)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

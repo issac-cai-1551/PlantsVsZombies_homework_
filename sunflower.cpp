@@ -3,26 +3,34 @@
 
 
 SunFlower::SunFlower(QGraphicsObject *parent)
-    :Plant(parent,":/res/GameRes/images/SunFlower.gif",50),sunlightInterval(500)
+    :Plant(parent,":/res/GameRes/images/Plants/SunFlower/SunFlower1.gif",50),sunlightInterval(500)
 {
     timer = new QTimer();
     timer->start(sunlightInterval);
 
-    plantAction();
+    SunFlower::plantAction();
 }
 
 void SunFlower::plantAction(){
     //sunlight generate
 
-    connect(timer,&QTimer::timeout,[=](){
+    connect(timer,&QTimer::timeout,this,[=](){
         int gen = QRandomGenerator::global()->bounded(1,13);
         int x = QRandomGenerator::global()->generateDouble()*10;
         int y = QRandomGenerator::global()->generateDouble()*10+20;
         if(gen == 1){
-            SunLight *sunlight = new SunLight;
-            sunlight->setPos(mapToScene(QPointF(x,y)));
-            emit sunlightProduce(sunlight);
-            scene()->addItem(sunlight);
+            CurrentGif = ":/res/GameRes/images/Plants/SunFlower/SunFlower2.gif";
+            ToCurrentGif();
+            QTimer::singleShot(1500,this,[=](){
+                SunLight *sunlight = new SunLight;
+                sunlight->setPos(mapToScene(QPointF(x,y)));
+                emit sunlightProduce(sunlight);
+                scene()->addItem(sunlight);
+                //换回gif
+                CurrentGif = ":/res/GameRes/images/Plants/SunFlower/SunFlower1.gif";
+                ToCurrentGif();
+            });
+
         }
     });
 }
