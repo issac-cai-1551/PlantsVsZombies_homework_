@@ -24,6 +24,8 @@ public:
     void setSun(int val);
     //添加卡片
     void addCard(QString plantName);
+    //得到卡片
+    QVector<Card*>& getCards(){return cards;}
 
 
 signals:

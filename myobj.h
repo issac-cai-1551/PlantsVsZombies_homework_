@@ -22,26 +22,29 @@ enum class Type{
     Other
 };
 enum class ZombieType{
-    None,
+
     NormalZombie,
     ScreenZombie,
     BucketZombie,
     ConeZombie,
     FootballZombie,
-    Zomboni
+    Zomboni,
+    None,
 };
 
 enum class DieType{
-    None,
+
     Normal,
-    CherryBOMB
+    CherryBOMB,
+    None,
 };
 enum class Direction{
-    None,
+
     Up,
     Down,
     Left,
-    Right
+    Right,
+    None,
 };
 
 class MyObject : public QGraphicsObject

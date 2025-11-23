@@ -87,7 +87,8 @@ void Card::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     // 如果冷却中或不可选择，绘制半透明遮罩和进度条
     if (!isReady || !isSelectable) {
         //半透明遮罩（覆盖卡片，表示不可点击）
-        painter->fillRect(boundingRect(), QColor(0, 0, 0, 50)); // 黑色半透明
+        int density = isSelectable ? 50 : 100;
+        painter->fillRect(boundingRect(), QColor(0, 0, 0, density)); // 黑色半透明
         if(!isReady)
         {
             //进度条（从下往上减少，对应冷却进度）

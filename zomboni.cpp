@@ -8,10 +8,10 @@ Zomboni::Zomboni()
     : Zombie(":/res/GameRes/images/Zombies/Zomboni/0.gif",
              ZombieType::Zomboni,
              "",
-             29999, // HP
+             29, // HP
              29,   // Speed
              10000), // Attack Power (秒杀)
-      mySummonInterval(10000), // 默认10秒
+      mySummonInterval(50000 * 1000), // 默认10秒
       mySelfSummonProbability(100) // 默认0%
 {
     // 冰车僵尸通常免疫减速（可选实现，这里先保留默认行为）
@@ -129,7 +129,7 @@ QPainterPath Zomboni::shape() const
     // 冰车碰撞箱，比普通僵尸大
     // 假设中心为原点，向左延伸（车头），向下延伸（车身）
     // 根据图片大概估算
-    path.addRect(-100, -40, 50, 80);
+    path.addRect(-100, -10, 50, 90);//
     return path;
 }
 

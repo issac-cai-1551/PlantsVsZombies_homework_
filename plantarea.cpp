@@ -29,8 +29,9 @@ void PlantArea::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     if(bg){
         painter->drawPixmap(0,0,bg->pixmap());
     }
-    painter->setPen(Qt::white);
-    painter->drawRect(this->boundingRect());
+    //ce shi
+    // painter->setPen(Qt::white);
+    // painter->drawRect(this->boundingRect());
  }
 //static int sunlightGenerate();
 PlantArea::~PlantArea(){
@@ -55,7 +56,7 @@ void PlantArea::setPlantable(bool plantable,QString coverage){
     }
 }
 
-void PlantArea::plant(enum PlantType plantType){
+bool PlantArea::plant(enum PlantType plantType){
     Plant *newPlant = nullptr;
 
     if(checkEmpty() && landType != LandType::DryLand && plantable){
@@ -122,7 +123,9 @@ void PlantArea::plant(enum PlantType plantType){
         setEmpty(false);
         //播放音效
         playSoundEffect("qrc:/res/GameRes/audio/plant1.wav");
+        return true;
     }
+    return false;
 }
 
 
@@ -147,17 +150,19 @@ void PlantArea::dropEvent(QGraphicsSceneDragDropEvent *event) {
         }
 }
 //移除植物
-void PlantArea::removePlant(){
+bool PlantArea::removePlant(){
     if(Myplant)//避免空指针
     {
         playSoundEffect("qrc:/res/GameRes/audio/tap.wav");
         Myplant->DealDead();
         Myplant = nullptr;
-        setEmpty(true);  
+        setEmpty(true);
+        return true;
     }
     else{
         qDebug()<<metaObject()->className()<<"MyPlant is nullptr";
     }
+    return false;
 }
 
 void PlantArea::dragEnterEvent(QGraphicsSceneDragDropEvent *event) {
