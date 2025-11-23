@@ -168,6 +168,13 @@ void Zombie::dealDead(enum DieType dieType){
         QTimer::singleShot(2000, this, [=](){
             //
             zombieNum--;
+            //处理gameScene中僵尸集合
+            // GameScene* gamescene = this->getGameScene();
+            // if(gamescene){
+            //     QList<Zombie*> zombies = gamescene->getZombies();
+            //     QMap<int,QList<Zombie*> > zombieRow = gamescene->getZombieRow();
+
+            // }
             if(zombieNum==0)emit noZombie(this->pos());
             deleteLater();
         });

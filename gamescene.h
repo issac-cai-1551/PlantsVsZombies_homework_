@@ -101,6 +101,9 @@ public:
 
     //得到种植地
     PlantArea* getPlantArea(int r,int c);
+    //得到僵尸集合
+    QList<Zombie*>& getZombies(){return zombies;}
+    QMap<int,QList<Zombie*>>& getZombieRow(){return zombieRow;}
     //得到商店
     Shop* getShop(){return shop;}
     //得到铲子
@@ -125,6 +128,9 @@ public:
     void sunlightGenerate(int prob=20);//每秒生成阳光的可能性 prob%,0-100
     //处理小推车生成
     void mowerGenerate();
+    void mowerGenerate(int r);
+    void releaseMower(int r);
+
     // void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     //处理进入下一波
     void setNextWave();

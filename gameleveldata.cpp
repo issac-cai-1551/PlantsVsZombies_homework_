@@ -113,7 +113,7 @@ GameLevelData_1::GameLevelData_1()
 {
     eName = "1";
     cName = QString("Level 1-1");
-    pName = { "Peashooter", "SnowPea", "SunFlower","WallNut","CherryBomb" ,"PotatoMine"};
+    pName = { "Peashooter", "SnowPea", "SunFlower","WallNut","CherryBomb" ,"PotatoMine","ScaredyShroom"};
     zombieData = { { ZombieType::NormalZombie,  1,{20,10,5,5,5} }, { ZombieType::FootballZombie, 4,{3,4,5,5,10} },
                   { ZombieType::ScreenZombie, 3,{5,10,5,5,10} },
                   { ZombieType::ConeZombie, 2, {5,10,5,5,10} }, { ZombieType::BucketZombie, 3, {5,10,5,5,10} } };

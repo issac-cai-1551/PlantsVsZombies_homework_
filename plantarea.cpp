@@ -3,16 +3,23 @@
 #include<QMimeData>
 #include<iostream>
 #include"gamescene.h"
+#include"scaredyshroom.h"
 
 PlantArea::PlantArea(int row,int col,enum LandType landType)
     :MyObject(nullptr),
-    width(81),height(94),isEmpty(true),landType(landType),bg(nullptr),Myplant(nullptr),row(row),col(col)
+    width(81),height(94),isEmpty(true),landType(landType),bg(nullptr),Myplant(nullptr)
+    ,row(row),col(col),
+    plantable(true)
 {
    setAcceptHoverEvents(true); // 关键：允许接收悬停事件
     setAcceptDrops(true); // 启用拖放
     dealLandType();
     connect(this,&PlantArea::GameOver,this,&QGraphicsObject::deleteLater);
 
+}
+//向外界提供该地植物指针
+Plant* PlantArea::getPlant(){
+    return Myplant;
 }
 // 必须实现的虚函数
 QRectF PlantArea::boundingRect() const {
@@ -29,22 +36,29 @@ void PlantArea::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 PlantArea::~PlantArea(){
     disconnect(this);
 }
-
+//
 void PlantArea::dealLandType(){
+    bg = new QGraphicsPixmapItem(QPixmap(),this);
     if(landType == LandType::Nomal || landType == LandType::None)return;
     if(landType == LandType::DryLand){
-        bg = new QGraphicsPixmapItem(QPixmap(":/res/GameRes/images/unplantableground.jpg"),this);
+        bg->setPixmap(QPixmap(":/res/GameRes/images/unplantableground.jpg"));
         update();
     }
 
 }
-
-
+//设置该地方是否能种,以及覆盖物
+void PlantArea::setPlantable(bool plantable,QString coverage){
+    this->plantable = plantable;
+    if(bg)
+    {
+        bg->setPixmap(QPixmap(coverage));
+    }
+}
 
 void PlantArea::plant(enum PlantType plantType){
     Plant *newPlant = nullptr;
 
-    if(checkEmpty() && landType != LandType::DryLand){
+    if(checkEmpty() && landType != LandType::DryLand && plantable){
         switch (plantType) {
         case PlantType::PEASHOOTER:
         {
@@ -86,6 +100,11 @@ void PlantArea::plant(enum PlantType plantType){
             qDebug()<<"plant snow";
 
             newPlant = new SnowPeashooter(this);
+            break;
+        }
+        case PlantType::ScaredyShroom:
+        {
+            newPlant = new ScaredyShroom(this);
             break;
         }
         default:

@@ -235,5 +235,22 @@
         <file>GameRes/audio/UraniwaNi.mp3</file>
         <file>GameRes/audio/winmusic.mp3</file>
         <file>GameRes/audio/scream.wav</file>
+        <file>GameRes/images/Plants/PB00.gif</file>
+        <file>GameRes/images/Plants/PB01.gif</file>
+        <file>GameRes/images/Plants/PB10.gif</file>
+        <file>GameRes/images/Plants/PB-10.gif</file>
+        <file>GameRes/images/Plants/PB11.gif</file>
+        <file>GameRes/images/Plants/PeaBulletHit.gif</file>
+        <file>GameRes/images/Plants/ShroomBullet.gif</file>
+        <file>GameRes/images/Plants/ShroomBulletHit.gif</file>
+        <file>GameRes/images/scarysan.png</file>
+        <file>GameRes/images/Plants/ScaredyShroom/0.gif</file>
+        <file>GameRes/images/Plants/ScaredyShroom/ScaredyShroom.gif</file>
+        <file>GameRes/images/Plants/ScaredyShroom/ScaredyShroomCry.gif</file>
+        <file>GameRes/images/Plants/ScaredyShroom/ScaredyShroomSleep.gif</file>
+        <file>GameRes/images/ScaredyShroom.png</file>
+        <file>GameRes/images/Plants/SunFlower/0.gif</file>
+        <file>GameRes/images/Plants/SunFlower/SunFlower1.gif</file>
+        <file>GameRes/images/Plants/SunFlower/SunFlower2.gif</file>
     </qresource>
 </RCC>

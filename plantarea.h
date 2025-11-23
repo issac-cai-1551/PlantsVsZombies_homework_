@@ -34,6 +34,7 @@ class PlantArea:public MyObject
     int row;
     int col;
     bool isEmpty;
+    bool plantable;
 
     QGraphicsPixmapItem *bg;
     Plant *Myplant;
@@ -42,8 +43,10 @@ class PlantArea:public MyObject
 
     //
     void setEmpty(bool isEmpty){this->isEmpty = isEmpty;}
+
     void dealLandType();
 public:
+
     explicit PlantArea(int row,int col,enum LandType landType = LandType::Nomal);
     // 必须实现的虚函数
     QRectF boundingRect() const override;
@@ -53,8 +56,13 @@ public:
     int h(){return height;}
     int r(){return row;}
     int c(){return col;}
+    //
     bool checkEmpty(){return isEmpty;}
     void removePlant();
+    //设置该地方是否能种,以及覆盖物
+    void setPlantable(bool plantable,QString coverage);
+    //向外界提供该地植物指针
+    Plant* getPlant();
     ~PlantArea();
 
 signals:

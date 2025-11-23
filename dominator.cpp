@@ -4,23 +4,14 @@
 #include"sunlight.h"
 #include<QDrag>
 #include<QMimeData>
+#include<QMap>
 
-Dominator::Dominator():MyObject(nullptr,QString(":/res/GameRes/images/muliBoki.gif"),Type::Dominator),
+Dominator::Dominator():MyObject(nullptr,QString(":/res/GameRes/images/scarysan.png"),Type::Dominator),
     speed(150),speedRate(1.0),coordinate(),eventInit(false)
 {
     dialog = new DialogBox(this);//dialg 随dominator添加到场景中
     dialog->hide();
     connect(dialog,&DialogBox::branchTriggered,this,&Dominator::branchTriggered);//给外界留接口
-    // QVector<QString> btnStrs;
-    // QVector<int> btnIds;
-    // btnStrs.push_back("haha");
-    // btnStrs.push_back("111");
-    // btnStrs.push_back("11");
-    // btnIds.push_back(1);
-    // btnIds.push_back(2);
-    // btnIds.push_back(3);
-    // dialog->setDialog("MuliMuli......",btnStrs,btnIds);
-    //
 }
 //事件初始化,需要外界调用
 void Dominator::initEvent(){
@@ -36,6 +27,9 @@ void Dominator::initEvent(){
 void Dominator::waveEvent(){
     //一段对白的开始
     connect(this,&Dominator::waveStart,this,[=](int currwave){
+        QString info = "第" + QString::number(currwave) +"波僵尸即将到来";
+        setDialog(info,{"知道了"},{10});
+
         switch (currwave) {
         case 0:{
             //1
@@ -77,9 +71,10 @@ void Dominator::btnEvent(){
 
         }
         if(id==1){
-            giveSunlight(50,50);
+            giveSunlight(10,50);
         }
         if(id==3)randomWalk();
+        if(id==10)hideDialog();
         hideDialog();
     });
 }
@@ -228,33 +223,52 @@ void Dominator::setCurrentGif(){
 
 }
 //小推车
-//
 void Dominator::releaseMower(int r){
     GameScene* gamescene = getGameScene();
     if(gamescene){
-
+        gamescene->releaseMower(r);
     }
 }
 void Dominator::addMower(int r){
     GameScene* gamescene = getGameScene();
     if(gamescene){
-
+        gamescene->mowerGenerate(r);
     }
 }
-
-//用户行为模拟
-//模拟拖拽
-void Dominator::simulateDrag(QPointF pos,QPointF toPos,QPixmap pixmap){
-    QDrag *drag = new QDrag(scene()->parent());
-    QMimeData *mimeData = new QMimeData;
-
-    // 仅传递必要的植物类型数据
-    mimeData->setData("shovel/remove", QByteArray::number(static_cast<bool>(true)));
-
-    drag->setMimeData(mimeData);
-
-    // 执行拖拽
-    drag->setHotSpot(QPoint(30,30));
-    drag->exec(Qt::CopyAction);
-
+//
+//改变（r,c)位置的植物攻速
+void Dominator::setPlantSpeedRate(qreal rate,int r,int c){
+    GameScene* gamescene = getGameScene();
+    if(gamescene){
+        PlantArea* area = gamescene->getPlantArea(r,c);
+        if(area){
+            Plant* plant = area->getPlant();
+            if(plant){
+                plant->setBulletSpeedRate(rate);
+            }
+        }
+    }
+}
+//改变（r,c)位置的植物威力
+void Dominator::setPlantPowerRate(qreal rate,int r,int c){
+    GameScene* gamescene = getGameScene();
+    if(gamescene){
+        PlantArea* area = gamescene->getPlantArea(r,c);
+        if(area){
+            Plant* plant = area->getPlant();
+            if(plant){
+                plant->setBulletPowerRate(rate);
+            }
+        }
+    }
+}
+//使某个地方无法种植,path 是无法种植地方覆盖物的图片路径
+void Dominator::setPlantabel(bool plantable,int r,int c,QString path){
+    GameScene* gamescene = getGameScene();
+    if(gamescene){
+        PlantArea* area = gamescene->getPlantArea(r,c);
+        if(area){
+            area->setPlantable(plantable,path);
+        }
+    }
 }
