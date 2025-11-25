@@ -69,6 +69,8 @@ public:
     //长线计划函数和变量，即dominator对游戏出现长期影响
     //每波进行阳光偷取
     int sunlightTax;//每波阳光税，默认为零
+    //TODO
+    //与boss有关参数
 
 
     //辅助函数

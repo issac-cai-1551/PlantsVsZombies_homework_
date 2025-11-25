@@ -13,8 +13,8 @@
 GameScene::GameScene(QObject *parent,GameLevelData* data)
     : QGraphicsScene(parent),settingsMenu(nullptr),levelData(data),
     moment(0),currWave(0),waveMoment(0),
-    plantareas(),zombies(),plants(),mowers(),
-    plantAreaMap(5,QList<PlantArea*>(9,nullptr)),plantRow(),zombieRow(),
+    plantareas(),mowers(),
+    plantAreaMap(5,QList<PlantArea*>(9,nullptr)),
     bgPath(data->backgroundImage),gameBg(nullptr),
     bgMus(new QMediaPlayer(this)),audioOutput(new QAudioOutput(this)),
     dominator(nullptr), flagMeter(nullptr)
@@ -452,8 +452,6 @@ void GameScene::ZombieGenerate(){
     if(zombie)
     {
         zombie->setPos(start);
-        zombies.push_back(zombie);
-        this->zombieRow[row].push_back(zombie);
         zombie->setZValue(row);
         addItem(zombie);
         //僵尸行走
@@ -527,8 +525,7 @@ void GameScene::ZombieGenerate(ZombieType zombieType,int row,int x){
     if(zombie)
     {
         zombie->setPos(QPointF(0 ,100) + QPointF(x ,94*row));
-        zombies.push_back(zombie);
-        this->zombieRow[row].push_back(zombie);
+
         zombie->setZValue(row);
         addItem(zombie);
         //僵尸行走
@@ -715,6 +712,38 @@ void GameScene::showPlayerWon(QPointF pos){
     connect(trophy, &Trophy::victoryAnimationFinished, this, &GameScene::GameOver);
 }
 
+//场景元素过滤
+template<typename T>
+QList<T*> GameScene::filterGameScene(std::function<bool(T*)> functor){
+    QList<QGraphicsItem*> allItems = this->items();
+    QList<QGraphicsItem*> filtered;
+    std::copy_if(allItems.begin(), allItems.end(), std::back_inserter(filtered),
+                 [functor](QGraphicsItem *item) {
+                     T *customItem = dynamic_cast<T*>(item);
+        return customItem && customItem->isActive() && functor(customItem);
+                 });
+    QList<T*> res;
+    foreach (QGraphicsItem* ptr, filtered) {
+        T* obj = dynamic_cast<T*>(ptr);
+        if(obj)res.push_back(obj);
+    }
+    return res;
+
+}
+//得到僵尸
+QList<Zombie*> GameScene::getZombies(){
+    QList<Zombie*> res = filterGameScene<Zombie>([=](Zombie* ){
+        return true;
+    });
+    return res;
+}
+QList<Zombie*> GameScene::getZombiesRow(int r){
+    QList<Zombie*> res = filterGameScene<Zombie>([=](Zombie * zombie){
+        return Coordinate().getRow(zombie->y()) == r;
+    });
+
+    return res;
+}
 //调试用
 // void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
 //     if(event->button() == Qt::LeftButton){

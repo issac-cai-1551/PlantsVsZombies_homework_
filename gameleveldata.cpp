@@ -43,12 +43,13 @@ QList<ZombieType> GameLevelData::zombieExtract(int currWave){
     while (currPower != powerLimit) {
         int gen = QRandomGenerator::global()->bounded(0,totWei);
         for(int i=0;i<zombieData.size();i++){
-            if(rank[i] < gen) {
+            //修复权重为零时不生成僵尸逻辑
+            if(rank[i] > gen && zombieData[i].waveWeight[currWave]) {
                 if(zombieData[i].power + currPower <= powerLimit){
                     res.push_back(zombieData[i].eName);
                     currPower += zombieData[i].power;
-                }
-            }else break;//超过powerlimit需要重新抽取
+                }else break;//超过powerlimit需要重新抽取
+            }
         }
     }
     return res;
