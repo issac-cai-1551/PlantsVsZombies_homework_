@@ -400,6 +400,8 @@ void Dominator::btnEvent(){
 }
 //辅助函数
 PlantType Dominator::getSacrificedFromBtnId(int btnId){
+    //TODO
+    //你可以在这里实现boss数值逻辑
     switch (btnId) {
     case 0:
         return PlantType::PEASHOOTER;
@@ -687,7 +689,7 @@ void Dominator::ProtectEyes() {
     }
 
     // 2. 现有僵尸减速
-    QList<Zombie*>& zombies = scene->getZombies();
+    QList<Zombie*> zombies = scene->getZombies();
     for (Zombie* zombie : zombies) {
         if (zombie) {
             zombie->setSlow(true);
@@ -701,7 +703,7 @@ void Dominator::ProtectEyes() {
         
         GameScene* currentScene = getGameScene();
         if(currentScene){
-             QList<Zombie*>& currentZombies = currentScene->getZombies();
+             QList<Zombie*> currentZombies = currentScene->getZombies();
              for (Zombie* zombie : currentZombies) {
                 if (zombie) {
                     zombie->setSlow(false);

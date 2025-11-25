@@ -517,8 +517,7 @@ void GameScene::ZombieGenerate(ZombieType zombieType,int row,int x){
     if(zombie)
     {
         zombie->setPos(QPointF(0 ,100) + QPointF(x ,94*row));
-        zombies.push_back(zombie);
-        this->zombieRow[row].push_back(zombie);
+
         zombie->setZValue(row);
         addItem(zombie);
         //僵尸行走
@@ -697,6 +696,35 @@ void GameScene::showPlayerWon(){
     trophy->setZValue(5); // 确保在最上层
 }
 
+//场景元素过滤
+QList<MyObject*> GameScene::filterGameScene(std::function<bool(MyObject*)> functor){
+    QList<QGraphicsItem*> allItems = this->items();
+    QList<QGraphicsItem*> filtered;
+    std::copy_if(allItems.begin(), allItems.end(), std::back_inserter(filtered),
+                 [functor](QGraphicsItem *item) {
+                     MyObject *customItem = dynamic_cast<MyObject*>(item);
+        return customItem && customItem->isActive() && functor(customItem);
+                 });
+    QList<MyObject*> res;
+    foreach (QGraphicsItem* ptr, filtered) {
+        MyObject* obj = dynamic_cast<MyObject*>(ptr);
+        if(obj)res.push_back(obj);
+    }
+    return res;
+
+}
+//得到僵尸
+QList<Zombie*> GameScene::getZombies(){
+    QList<Zombie*> res;
+    QList<MyObject*> set = filterGameScene([=](MyObject * obj){
+        return obj->getObjType() == Type::ZOMBIE;
+    });
+    foreach (QGraphicsItem* ptr, set) {
+        Zombie* obj = dynamic_cast<Zombie*>(ptr);
+        if(obj)res.push_back(obj);
+    }
+    return res;
+}
 //调试用
 // void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
 //     if(event->button() == Qt::LeftButton){
