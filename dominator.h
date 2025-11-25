@@ -24,6 +24,10 @@ protected:
     QGraphicsPixmapItem *attachment;//附带图片
     Coordinate coordinate;
 
+private:
+    bool eyeProtectionOn = false;
+    QGraphicsRectItem* eyeProtectionLayer = nullptr;
+
 public:
     //get
     Dominator();
@@ -43,7 +47,8 @@ public:
     void stealSunlight(int num,int eachVal);//有动画效果，生成num个阳光，每个阳光的值为-eachVal
     void giveSunlight(int num);//给予阳光
     void giveSunlight(int num,int eachVal);//有动画效果，生成num个阳光，每个阳光的值为eachVal
-    void setCoverage();//类似于护眼模式
+    void ProtectEyes(); // 护眼模式：屏幕蒙上深黄色薄膜，所有僵尸减速20%
+    bool isEyeProtectionOn() const { return eyeProtectionOn; } //看护眼模式是否开启
     void setPlantabel(bool plantable,int r,int c,QString path);//使某个地方无法/可以种植,path 是无法种植地方覆盖物的图片路径
     //小推车
     void releaseMower(int r);

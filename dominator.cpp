@@ -6,10 +6,12 @@
 #include<QDrag>
 #include<QMimeData>
 #include<QMap>
+#include<QTimer>
+
 
 Dominator::Dominator():MyObject(nullptr,QString(":/res/GameRes/images/scarysan_small.png"),Type::Dominator),
     speed(100),speedRate(1.0),coordinate(),eventInit(false),
-    sunlightTax(0)
+    sunlightTax(0), eyeProtectionOn(false), eyeProtectionLayer(nullptr)
 {
     dialog = new DialogBox(this);//dialg 随dominator添加到场景中
     dialog->hide();
@@ -660,6 +662,53 @@ void Dominator::setPlantabel(bool plantable,int r,int c,QString path){
             area->setPlantable(plantable,path);
         }
     }
+}
+
+void Dominator::ProtectEyes() {
+    if (eyeProtectionOn) return;
+    eyeProtectionOn = true;
+
+    GameScene* scene = getGameScene();
+    if (!scene) return;
+
+    // 1. 添加淡黄色薄膜
+    if (!eyeProtectionLayer) {
+        // 覆盖整个场景
+        eyeProtectionLayer = new QGraphicsRectItem(scene->sceneRect());
+        // 淡黄色 (R=255, G=255, B=200), 透明度 50 (0-255)
+        eyeProtectionLayer->setBrush(QBrush(QColor(255, 128, 0, 50)));
+        eyeProtectionLayer->setPen(Qt::NoPen);
+        // 设置较高的 ZValue 以覆盖大部分游戏物体
+        // 僵尸 ZValue 是 row (0-4). 植物也是.
+        eyeProtectionLayer->setZValue(100); 
+        scene->addItem(eyeProtectionLayer);
+    } else {
+        eyeProtectionLayer->setVisible(true);
+    }
+
+    // 2. 现有僵尸减速
+    QList<Zombie*>& zombies = scene->getZombies();
+    for (Zombie* zombie : zombies) {
+        if (zombie) {
+            zombie->setSlow(true);
+        }
+    }
+
+    // 3. 8秒后自动关闭
+    QTimer::singleShot(8000, this, [=](){
+        eyeProtectionOn = false;
+        if(eyeProtectionLayer) eyeProtectionLayer->setVisible(false);
+        
+        GameScene* currentScene = getGameScene();
+        if(currentScene){
+             QList<Zombie*>& currentZombies = currentScene->getZombies();
+             for (Zombie* zombie : currentZombies) {
+                if (zombie) {
+                    zombie->setSlow(false);
+                }
+            }
+        }
+    });
 }
 //献祭植物,返回值代表是否献祭成功
 bool Dominator::sacrifyPlant(PlantType planttype){

@@ -29,7 +29,6 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt6 REQUIRED COMPONENTS Core)
 
     qt_add_executable(Game
         MANUAL_FINALIZATION
@@ -77,9 +76,13 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
         zomboni.cpp
         zomboni.cpp
         zomboni.h
-        scaredyshroom.h scaredyshroom.cpp
 
 
+        flagmeter.h
+        flagmeter.cpp
+        flagmeter.h
+        scaredyshroom.cpp
+        scaredyshroom.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Game APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -108,7 +111,6 @@ target_link_libraries(Game PRIVATE Qt6::Widgets)
 target_link_libraries(Game PRIVATE Qt6::Core)
 target_link_libraries(Game PRIVATE Qt6::Core)
 target_link_libraries(Game PRIVATE Qt6::Core Qt6::Widgets)
-target_link_libraries(Game PRIVATE Qt6::Core)
 target_link_libraries(Game PRIVATE Qt6::Core)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

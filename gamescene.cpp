@@ -17,7 +17,7 @@ GameScene::GameScene(QObject *parent,GameLevelData* data)
     plantAreaMap(5,QList<PlantArea*>(9,nullptr)),plantRow(),zombieRow(),
     bgPath(data->backgroundImage),gameBg(nullptr),
     bgMus(new QMediaPlayer(this)),audioOutput(new QAudioOutput(this)),
-    dominator(nullptr)
+    dominator(nullptr), flagMeter(nullptr)
 {
     //检查gameleveldata是否为空,若为空，输出问题并退出
     if(!levelData){
@@ -42,6 +42,14 @@ GameScene::GameScene(QObject *parent,GameLevelData* data)
 
     dominator = new Dominator();
     addItem(dominator);
+
+    // 进度条
+    flagMeter = new FlagMeter(levelData);
+    addItem(flagMeter);
+
+    //位置 750，300
+    flagMeter->setPos(860, 570);
+
     //音效
     audioOutput->setVolume(0.5);
     bgMus->setAudioOutput(audioOutput);
@@ -66,6 +74,7 @@ GameScene::GameScene(QObject *parent,GameLevelData* data)
     connect(waveTimer,&QTimer::timeout,this,[=](){
         moment++;//记录游戏已经进行的时间
         waveMoment++;
+        if(flagMeter) flagMeter->updateProgress(moment);
         //当前波结束，开始下一波计时
         if(currWave < levelData->waveNum && waveMoment>=levelData->waveDuration[currWave]){
             setNextWave();
@@ -130,6 +139,10 @@ void GameScene::DominatorAct(){
     if(!dominator)return;
     dominator->setPos(this->sceneRect().center());
     dominator->setZValue(10);
+    // 调试用
+    // QTimer::singleShot(20000,dominator,[=](){
+    //     dominator->ProtectEyes();
+    // });
     connect(this,&GameScene::waveStart,dominator,&Dominator::waveStart);//使dominator能感应外界波次
     dominator->initEvent();
 }
@@ -268,6 +281,7 @@ void GameScene::GameStart(){
     // ZombieGenerate();
     //第0波开始
     emit waveStart(0);
+    if(flagMeter) flagMeter->showMeter();
 
     // DEBUG: 10秒后直接触发胜利
     // QTimer::singleShot(10000, this, [=](){
@@ -448,6 +462,11 @@ void GameScene::ZombieGenerate(){
         connect(zombie,&Zombie::zombieSuccess,this,&GameScene::showZombieWon);
         connect(this,&GameScene::GameOver,zombie,&MyObject::GameOver);
         connect(this,&GameScene::GamePause,zombie,&MyObject::GamePause);
+        
+        // 检查护眼模式
+        if(dominator && dominator->isEyeProtectionOn()){
+            zombie->setSlow(true);
+        }
     }
 }
 //在指定位置生成僵尸
@@ -488,6 +507,8 @@ void GameScene::ZombieGenerate(ZombieType zombieType,int row,int x){
         if (levelData) {
             zomboni->setMySummonInterval(levelData->zomboniSummonInterval);
             zomboni->setMySelfSummonProbability(levelData->zomboniSelfSummonProb);
+            zomboni->reduceHP(levelData->zomboniHPRate);
+            zomboni->reduceSpeed(levelData->zomboniSpeedRate);
         }
         zombie = zomboni;
         break;
@@ -508,6 +529,11 @@ void GameScene::ZombieGenerate(ZombieType zombieType,int row,int x){
         connect(zombie,&Zombie::zombieSuccess,this,&GameScene::showZombieWon);
         connect(this,&GameScene::GameOver,zombie,&MyObject::GameOver);//与消亡绑定
         connect(this,&GameScene::GamePause,zombie,&MyObject::GamePause);
+
+        // 检查护眼模式
+        if(dominator && dominator->isEyeProtectionOn()){
+            zombie->setSlow(true);
+        }
     }
 }
 //根据当前波数生成僵尸

@@ -263,6 +263,9 @@
         <file>GameRes/images/Plants/SunFlower/0.gif</file>
         <file>GameRes/images/Plants/SunFlower/SunFlower1.gif</file>
         <file>GameRes/images/Plants/SunFlower/SunFlower2.gif</file>
+        <file>GameRes/images/FlagMeterEmpty.png</file>
+        <file>GameRes/images/FlagMeterParts1.png</file>
+        <file>GameRes/images/FlagMeterParts2.png</file>
         <file>GameRes/images/scarysan_small.png</file>
     </qresource>
 </RCC>
