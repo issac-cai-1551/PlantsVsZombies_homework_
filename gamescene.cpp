@@ -697,17 +697,18 @@ void GameScene::showPlayerWon(){
 }
 
 //场景元素过滤
-QList<MyObject*> GameScene::filterGameScene(std::function<bool(MyObject*)> functor){
+template<typename T>
+QList<T*> GameScene::filterGameScene(std::function<bool(T*)> functor){
     QList<QGraphicsItem*> allItems = this->items();
     QList<QGraphicsItem*> filtered;
     std::copy_if(allItems.begin(), allItems.end(), std::back_inserter(filtered),
                  [functor](QGraphicsItem *item) {
-                     MyObject *customItem = dynamic_cast<MyObject*>(item);
+                     T *customItem = dynamic_cast<T*>(item);
         return customItem && customItem->isActive() && functor(customItem);
                  });
-    QList<MyObject*> res;
+    QList<T*> res;
     foreach (QGraphicsItem* ptr, filtered) {
-        MyObject* obj = dynamic_cast<MyObject*>(ptr);
+        T* obj = dynamic_cast<T*>(ptr);
         if(obj)res.push_back(obj);
     }
     return res;
@@ -715,14 +716,16 @@ QList<MyObject*> GameScene::filterGameScene(std::function<bool(MyObject*)> funct
 }
 //得到僵尸
 QList<Zombie*> GameScene::getZombies(){
-    QList<Zombie*> res;
-    QList<MyObject*> set = filterGameScene([=](MyObject * obj){
-        return obj->getObjType() == Type::ZOMBIE;
+    QList<Zombie*> res = filterGameScene<Zombie>([=](Zombie* ){
+        return true;
     });
-    foreach (QGraphicsItem* ptr, set) {
-        Zombie* obj = dynamic_cast<Zombie*>(ptr);
-        if(obj)res.push_back(obj);
-    }
+    return res;
+}
+QList<Zombie*> GameScene::getZombiesRow(int r){
+    QList<Zombie*> res = filterGameScene<Zombie>([=](Zombie * zombie){
+        return Coordinate().getRow(zombie->y()) == r;
+    });
+
     return res;
 }
 //调试用

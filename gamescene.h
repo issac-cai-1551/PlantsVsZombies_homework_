@@ -101,6 +101,7 @@ public:
     PlantArea* getPlantArea(int r,int c);
     //得到僵尸集合
     QList<Zombie*> getZombies();
+    QList<Zombie*> getZombiesRow(int r);
     //得到商店
     Shop* getShop(){return shop;}
     //得到铲子
@@ -136,7 +137,8 @@ public:
     //处理玩家胜利
     void showPlayerWon();
     //场景元素过滤
-    QList<MyObject*> filterGameScene(std::function<bool(MyObject*)> functor);
+    template<typename T>
+    QList<T*> filterGameScene(std::function<bool(T*)> functor);
 
 signals:
     void GameOver();
