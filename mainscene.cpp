@@ -87,17 +87,35 @@ MainScene::MainScene(QWidget *parent)
         view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
 
         // 连接 GameOver 信号
+        // 连接 GameOver 信号
+        // 使用 QueuedConnection 确保在事件循环的下一次迭代中处理，避免在信号发射栈中进行销毁操作
         connect(scene, &GameScene::GameOver, this, [=](){
+            qDebug() << "MainScene received GameOver";
+            // 防止重复调用导致崩溃
+            if (!scene || !view) return;
+
             stackedWidget->setCurrentWidget(startWidget);
             menu_btn->hide();
 
             // 延迟删除场景和视图
             stackedWidget->removeWidget(view);
+            
+            // 安全清理：先解绑场景，再删除
+            view->setScene(nullptr);
+            
+            // 显式清空场景中的所有图元，防止图元析构顺序问题
+            scene->clear();
+
+            // 确保 scene 销毁时不会触发 view 的重绘或其他事件
             scene->deleteLater();
+            
+            // view 稍后删除
             view->deleteLater();
+            
             scene = nullptr;
             view = nullptr;
-        });
+            qDebug() << "Scene and View scheduled for deletion";
+        }, Qt::QueuedConnection);
 
         stackedWidget->setCurrentWidget(view);
         menu_btn->show();

@@ -139,7 +139,7 @@ public:
     //处理僵尸胜利
     void showZombieWon();
     //处理玩家胜利
-    void showPlayerWon();
+    void showPlayerWon(QPointF pos = QPointF(600, 300));
 
 signals:
     void GameOver();

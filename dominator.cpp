@@ -38,7 +38,7 @@ void Dominator::waveEvent(){
         Animate(this).duration(AnimationType::Move,1000)
             .move(QPointF(coordinate.getX(4),coordinate.getY(2)),false);
         QString info = "第" + QString::number(currwave) +"波僵尸即将到来";
-        setDialog(info,{"知道了"},{-1});
+        if(currwave <= 6)setDialog(info,{"知道了"},{-1});
 
         switch (currwave) {
         case 0:{
@@ -152,6 +152,7 @@ void Dominator::waveEvent(){
                 setDialog("温馨提示，长时间游戏伤眼睛，本小姐来帮你开一下护眼模式。",btnStrs,btnIds);
                 QTimer::singleShot(1000,this,[=](){
                     hideDialog();
+                    ProtectEyes();
                 });
             });
             break;
