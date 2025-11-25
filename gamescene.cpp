@@ -13,8 +13,8 @@
 GameScene::GameScene(QObject *parent,GameLevelData* data)
     : QGraphicsScene(parent),settingsMenu(nullptr),levelData(data),
     moment(0),currWave(0),waveMoment(0),
-    plantareas(),zombies(),plants(),mowers(),
-    plantAreaMap(5,QList<PlantArea*>(9,nullptr)),plantRow(),zombieRow(),
+    plantareas(),mowers(),
+    plantAreaMap(5,QList<PlantArea*>(9,nullptr)),
     bgPath(data->backgroundImage),gameBg(nullptr),
     bgMus(new QMediaPlayer(this)),audioOutput(new QAudioOutput(this)),
     dominator(nullptr), flagMeter(nullptr)
@@ -452,8 +452,6 @@ void GameScene::ZombieGenerate(){
     if(zombie)
     {
         zombie->setPos(start);
-        zombies.push_back(zombie);
-        this->zombieRow[row].push_back(zombie);
         zombie->setZValue(row);
         addItem(zombie);
         //僵尸行走

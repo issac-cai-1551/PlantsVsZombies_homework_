@@ -51,12 +51,8 @@ class GameScene : public QGraphicsScene
     Shovel * shovel;//铲子
     //各类物品集合
     QList<PlantArea*> plantareas;
-    QList<Plant*> plants;
-    QList<Zombie*> zombies;
     QMap<int,Mower*> mowers;
     //依靠行将控件分组
-    QMap<int,QList<Plant*> > plantRow;
-    QMap<int,QList<Zombie*> > zombieRow;
     QList<QList<PlantArea*>> plantAreaMap;//位置存储各个种植地
 
     //音效
@@ -103,9 +99,7 @@ public:
 
     //得到种植地
     PlantArea* getPlantArea(int r,int c);
-    //得到僵尸集合
-    QList<Zombie*>& getZombies(){return zombies;}
-    QMap<int,QList<Zombie*>>& getZombieRow(){return zombieRow;}
+
     //得到商店
     Shop* getShop(){return shop;}
     //得到铲子

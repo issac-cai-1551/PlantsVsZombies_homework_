@@ -43,12 +43,13 @@ QList<ZombieType> GameLevelData::zombieExtract(int currWave){
     while (currPower != powerLimit) {
         int gen = QRandomGenerator::global()->bounded(0,totWei);
         for(int i=0;i<zombieData.size();i++){
-            if(rank[i] < gen) {
+            //修复权重为零时不生成僵尸逻辑
+            if(rank[i] > gen && zombieData[i].waveWeight[currWave]) {
                 if(zombieData[i].power + currPower <= powerLimit){
                     res.push_back(zombieData[i].eName);
                     currPower += zombieData[i].power;
-                }
-            }else break;//超过powerlimit需要重新抽取
+                }else break;//超过powerlimit需要重新抽取
+            }
         }
     }
     return res;
@@ -118,10 +119,10 @@ GameLevelData_1::GameLevelData_1()
     eName = "1";
     cName = QString("Level 1-1");
     pName = { "Peashooter", "SnowPea", "SunFlower","WallNut","CherryBomb" ,"PotatoMine","ScaredyShroom"};
-    zombieData = { { ZombieType::NormalZombie,  1,{20,10,5,5,5} }, { ZombieType::FootballZombie, 4,{3,4,5,5,10} },
-                  { ZombieType::ScreenZombie, 3,{5,10,5,5,10} },
-                  { ZombieType::ConeZombie, 2, {5,10,5,5,10} }, { ZombieType::BucketZombie, 3, {5,10,5,5,10} } };
-
+    zombieData = { { ZombieType::NormalZombie,  1,{1,1,1,1,1} }, { ZombieType::FootballZombie, 4,{0,1,0,0,0} },
+                  { ZombieType::ScreenZombie, 3,{0,0,0,0,1} },
+                  { ZombieType::ConeZombie, 2, {0,0,0,1,0} }, { ZombieType::BucketZombie, 3, {0,0,1,0,0} } };
+//注意：每波必须要有强度为1的僵尸否则可能因为永远无法使总强度为limitPower而引发无限循环
     largeWaveFlag = { 2,5 };
     waveTotWeightInit();//初始化每波总权重
 

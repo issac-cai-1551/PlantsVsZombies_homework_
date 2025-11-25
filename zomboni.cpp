@@ -8,7 +8,7 @@ Zomboni::Zomboni()
     : Zombie(":/res/GameRes/images/Zombies/Zomboni/0.gif",
              ZombieType::Zomboni,
              "",
-             49999, // HP
+             1, // HP
              10,   // Speed
              10000), // Attack Power (秒杀)
       mySummonInterval(10000), // 默认10秒
