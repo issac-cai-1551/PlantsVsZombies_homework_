@@ -40,7 +40,7 @@ class GameScene : public QGraphicsScene
     //外部控件，不跟随gamescene生命周期
     SettingsMenu *settingsMenu;
     //
-    GameLevelData* levelData;
+
     FlagMeter* flagMeter;
 
     //archive
@@ -72,7 +72,7 @@ class GameScene : public QGraphicsScene
 
     void moveBg();/*
     Coordinate* coo;*/
-    
+
     // 代理控件
     QGraphicsProxyWidget *start_proxy;
     QGraphicsProxyWidget *cardDelete_proxy;
@@ -81,6 +81,8 @@ public:
     explicit GameScene(QObject *parent = nullptr,GameLevelData* data = new GameLevelData_1());
     ~GameScene();
     void PlantAreaGenerate();
+
+    GameLevelData* levelData;
 
     void cardAvailable();
     void menuInit();

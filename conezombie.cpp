@@ -3,7 +3,7 @@
 ConeZombie::ConeZombie()
     :Zombie(":/res/GameRes/images/ConeZombieWalk.gif",ZombieType::ConeZombie,
              ":/res/GameRes/images/ConeZombieAttack.gif",
-             2000,29,500)//int hp,int speed,int attackpower,
+             250,29,20)//int hp,int speed,int attackpower,
 {
 
 }

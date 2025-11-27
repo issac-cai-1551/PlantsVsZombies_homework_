@@ -5,7 +5,7 @@
 #include<QGraphicsRectItem>
 
 SnowPeashooter::SnowPeashooter(QGraphicsObject *parent)
-    :Plant(parent,":/res/GameRes/images/SnowPea.gif",200),bulletHz(34)
+    :Plant(parent,":/res/GameRes/images/SnowPea.gif",100),bulletHz(34)
 {
 
     //单独的射程检测区域
@@ -44,7 +44,7 @@ void SnowPeashooter::plantAction(){
 
         if(scene() && Bullet::bulletNum<Bullet::delNum+200){
             SnowPea *bullet = new SnowPea(":/res/GameRes/images/Plants/PB-10.gif"
-                                          ,100*bulletPowerRate);
+                                          ,15*bulletPowerRate);
 
             connect(this,&MyObject::GameOver,bullet,&MyObject::GameOver);//
 

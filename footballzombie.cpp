@@ -3,7 +3,7 @@
 FootballZombie::FootballZombie()
     :Zombie(":/res/GameRes/images/FootballZombieWalk.gif",ZombieType::FootballZombie,
              ":/res/GameRes/images/FootballZombieAttack.gif",
-             2000,40,500
+             600,45,30
              )//int hp,int speed,int attackpower,
 {
 

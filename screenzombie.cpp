@@ -4,7 +4,7 @@
 ScreenZombie::ScreenZombie()
     :Zombie(":/res/GameRes/images/ScreenZombieWalk.gif",ZombieType::NormalZombie,
              ":/res/GameRes/images/ScreenZombieAttack.gif",
-             1000,29,500
+             350,29,30
              )//int hp,int speed,int attackpower,
 {
 
