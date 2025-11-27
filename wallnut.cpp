@@ -1,7 +1,7 @@
 #include "wallnut.h"
 
 WallNut::WallNut(QGraphicsObject *parent)
-    :Plant(parent,":/res/GameRes/images/WallNut.gif",6000)//cost=100,hp=4000
+    :Plant(parent,":/res/GameRes/images/WallNut.gif",500)//cost=100,hp=4000
 {
 
 }

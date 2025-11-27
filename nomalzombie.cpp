@@ -4,7 +4,7 @@
 NomalZombie::NomalZombie()
     :Zombie(":/res/GameRes/images/ZombieWalk1.gif",ZombieType::NormalZombie,
              ":/res/GameRes/images/ZombieAttack.gif",
-            1000,29,500)//int hp,int speed,int attackpower,
+            120,25,15)//int hp,int speed,int attackpower,
 {
 
 }

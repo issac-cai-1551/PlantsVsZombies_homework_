@@ -536,11 +536,11 @@ void GameScene::ZombieGenerate(ZombieType zombieType,int row,int x){
 //根据当前波数生成僵尸
 void GameScene::ZombieGenerate(int currwave){
     // 调试：第0波生成一个冰车僵尸
-    if(currwave == 0) {
-        qDebug() << "yes, I'm generating zomboni!";
-        int row = QRandomGenerator::global()->bounded(0,5);
-        ZombieGenerate(ZombieType::Zomboni, row, this->width()+200);
-    }
+    // if(currwave == 0) {
+    //     qDebug() << "yes, I'm generating zomboni!";
+    //     int row = QRandomGenerator::global()->bounded(0,5);
+    //     ZombieGenerate(ZombieType::Zomboni, row, this->width()+200);
+    // }
 
     QList<ZombieType> zombies = levelData->zombieExtract(currwave);
     for (int i = 0; i < zombies.size(); ++i)

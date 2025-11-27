@@ -3,7 +3,7 @@
 BucketZombie::BucketZombie()
     :Zombie(":/res/GameRes/images/BucketZombieWalk.gif",ZombieType::BucketZombie,
              ":/res/GameRes/images/BucketZombieAttack.gif",
-             2000,29,500)//int hp,int speed,int attackpower,
+             500,20,25)//int hp,int speed,int attackpower,
 {
 
 }

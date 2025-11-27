@@ -4,7 +4,7 @@
 #include<QGraphicsScene>
 #include<QGraphicsRectItem>
 Peashooter::Peashooter(QGraphicsObject *parent)
-    :Plant(parent,":/res/GameRes/images/Peashooter.gif",150),bulletHz(34)
+    :Plant(parent,":/res/GameRes/images/Peashooter.gif",100),bulletHz(34)
 {
 
     //单独的射程检测区域（仅用于检测僵尸，不影响物理碰撞）
@@ -41,7 +41,7 @@ void Peashooter::plantAction(){
     connect(this,&Plant::findZombie,this,[=](MyObject *zombie){
 
         if(scene() && Bullet::bulletNum<Bullet::delNum+200){
-            Bullet *bullet = new Bullet(":/res/GameRes/images/Plants/PB00.gif",100*bulletPowerRate);
+            Bullet *bullet = new Bullet(":/res/GameRes/images/Plants/PB00.gif",20*bulletPowerRate);
             connect(this,&MyObject::GameOver,bullet,&MyObject::GameOver);
             bullet->setPos(this->scenePos()+QPointF(40,-20));
             bullet->setBombGif(":/res/GameRes/images/Plants/PeaBulletHit.gif");

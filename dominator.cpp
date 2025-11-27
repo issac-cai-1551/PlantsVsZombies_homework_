@@ -46,16 +46,16 @@ void Dominator::waveEvent(){
             QTimer::singleShot(1000,this,[=](){
                 setDialog("你好啊杂鱼～");
                 //2
-                QTimer::singleShot(1000,this,[=](){
+                QTimer::singleShot(1500,this,[=](){
                     setDialog("现在外面的臭僵尸这么多，快要威胁到本小姐的房子了");
                     //3
-                    QTimer::singleShot(1000,this,[=](){
+                    QTimer::singleShot(2000,this,[=](){
                         setDialog("本小姐需要一位保镖来保护本小姐，你看上去有胳膊有腿的，本小姐觉得很合适");
                         //4
-                        QTimer::singleShot(1000,this,[=](){
+                        QTimer::singleShot(3000,this,[=](){
                             setDialog("如果本小姐没猜错，你应该很乐意吧～");
                             //5
-                            QTimer::singleShot(1000,this,[=](){
+                            QTimer::singleShot(2000,this,[=](){
                                 QVector<QString> btnStrs;
                                 QVector<int> btnIds;
                                 btnStrs.push_back("豌豆射手");
@@ -234,7 +234,7 @@ void Dominator::btnEvent(){
         }
         case 11:{
             setDialog("那本小姐看看你有什么本事");
-            QTimer::singleShot(1000,this,[=](){
+            QTimer::singleShot(1500,this,[=](){
                 hideDialog();
                 randomWalk();
             });//1s后隐藏对话框
