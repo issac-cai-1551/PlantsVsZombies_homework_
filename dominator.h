@@ -71,7 +71,8 @@ public:
     int sunlightTax;//每波阳光税，默认为零
     //TODO
     //与boss有关参数
-
+    PlantType sacrifiedPlant;//献祭的植物类型
+    void sacrifyImpactBoss(PlantType planttype);//献祭植物对boss的影响
 
     //辅助函数
     PlantType getSacrificedFromBtnId(int btnId);//通过btnId得到献祭植物
