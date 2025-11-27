@@ -1,5 +1,5 @@
 #include "shop.h"
-Shop::Shop(QGraphicsObject *parent) : CardsContainer(":/res/GameRes/images/Shop.png",parent), totalValue(5000)
+Shop::Shop(QGraphicsObject *parent) : CardsContainer(":/res/GameRes/images/Shop.png",parent), totalValue(500)
 {
 
     sunlightText = new QGraphicsSimpleTextItem(this);

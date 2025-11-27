@@ -28,6 +28,8 @@ private:
     bool eyeProtectionOn = false;
     QGraphicsRectItem* eyeProtectionLayer = nullptr;
 
+    PlantType sacrifiedPlant=PlantType::PEASHOOTER;
+
 public:
     //get
     Dominator();
@@ -60,6 +62,8 @@ public:
     bool sacrifyPlant(PlantType planttype);
     //
     void gameOver();//处理游戏结束结局
+
+    void sacrifyImpactBoss(PlantType planttype);
 
 
     //随机游走

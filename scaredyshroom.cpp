@@ -4,7 +4,7 @@
 #include<QGraphicsScene>
 #include<QGraphicsRectItem>
 ScaredyShroom::ScaredyShroom(QGraphicsObject *parent)
-    :Plant(parent,":/res/GameRes/images/Plants/ScaredyShroom/ScaredyShroomSleep.gif",150),bulletHz(34)
+    :Plant(parent,":/res/GameRes/images/Plants/ScaredyShroom/ScaredyShroomSleep.gif",80),bulletHz(34)
 {
 
     //单独的射程检测区域
@@ -65,7 +65,7 @@ void ScaredyShroom::plantAction(){
     connect(this,&Plant::findZombie,this,[=](MyObject *zombie){
 
         if(scene() && Bullet::bulletNum<Bullet::delNum+200){
-            Bullet *bullet = new Bullet(":/res/GameRes/images/Plants/ShroomBullet.gif",100*bulletPowerRate);
+            Bullet *bullet = new Bullet(":/res/GameRes/images/Plants/ShroomBullet.gif",35*bulletPowerRate);
             connect(this,&MyObject::GameOver,bullet,&MyObject::GameOver);
             bullet->setPos(this->scenePos()+QPointF(50,5));
             bullet->setBombGif(":/res/GameRes/images/Plants/ShroomBulletHit.gif");

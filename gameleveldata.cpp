@@ -5,7 +5,7 @@
 
 
 GameLevelData::GameLevelData():
-    sunProb(20),
+    sunProb(5),
     backgroundImage(":/res/GameRes/images/Background.jpg"),
     backgroundMusic("qrc:/res/GameRes/audio/UraniwaNi.mp3"),//必须是url
     mowerRow({ 1, 1, 1, 1, 1, 1 }),
@@ -13,11 +13,13 @@ GameLevelData::GameLevelData():
     maxSelectedCards(8),
     waveNum(7),
     waveTotWeight(waveNum,0),
-    waveDuration({15,30,30,40,40,30,10}),
-    waveLimits({10,15,20,25,35,40,50}),
+
+    waveDuration({10,60,60,60,60,60,60}),
+    waveLimits({10,12,20,32,48,60,10}),
+
     map(5,QList<int>(9,0)),
-    zomboniSummonInterval(10000), // 默认10秒
-    zomboniSelfSummonProb(0),      // 默认0%
+    zomboniSummonInterval(8000), // 默认8秒
+    zomboniSelfSummonProb(5),      // 默认0%
     zomboniHPRate(1.0), // 默认100%
     zomboniSpeedRate(1.0) // 默认100%
 {
@@ -119,11 +121,17 @@ GameLevelData_1::GameLevelData_1()
     eName = "1";
     cName = QString("Level 1-1");
     pName = { "Peashooter", "SnowPea", "SunFlower","WallNut","CherryBomb" ,"PotatoMine","ScaredyShroom"};
-    zombieData = { { ZombieType::NormalZombie,  1,{20,10,5,5,5,5,5} }, { ZombieType::FootballZombie, 4,{3,4,5,5,10,10,10} },
-                  { ZombieType::ScreenZombie, 3,{5,10,5,5,10,10,10} },
-                  { ZombieType::ConeZombie, 2, {5,10,5,5,10,10,10} }, { ZombieType::BucketZombie, 3, {5,10,5,5,10,10,10} } };
+
+
+//注意：每波必须要有强度为1的僵尸否则可能因为永远无法使总强度为limitPower而引发无限循环
+
+    zombieData = { { ZombieType::NormalZombie,  1,{10,70,50,40,30,25,10} }, { ZombieType::FootballZombie, 4,{0,0,0,0,10,15,0} },
+                  { ZombieType::ScreenZombie, 3,{0,0,0,10,15,15,0} },
+                  { ZombieType::ConeZombie, 2, {0,30,30,30,25,25,0} }, { ZombieType::BucketZombie, 3, {0,0,20,20,20,20,0} } };
+
 
     largeWaveFlag = { 2,6 };
+
     waveTotWeightInit();//初始化每波总权重
 
 }

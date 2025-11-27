@@ -551,6 +551,7 @@ void GameScene::ZombieGenerate(ZombieType zombieType,int row,int x){
 }
 //根据当前波数生成僵尸
 void GameScene::ZombieGenerate(int currwave){
+
     if(currwave == 0)return;
     // 第6波（即第7波）只生成一个冰车僵尸
     if(currwave == 6) {
@@ -559,6 +560,7 @@ void GameScene::ZombieGenerate(int currwave){
         ZombieGenerate(ZombieType::Zomboni, row, this->width()+200);
         return; // 直接返回，不生成其他僵尸
     }
+
 
     QList<ZombieType> zombies = levelData->zombieExtract(currwave);
     for (int i = 0; i < zombies.size(); ++i)

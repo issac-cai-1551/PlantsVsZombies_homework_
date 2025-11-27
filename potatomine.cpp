@@ -2,7 +2,7 @@
 
 
 PotatoMine::PotatoMine(QGraphicsObject *parent)
-    :Plant(parent,":/res/GameRes/images/PotatoMine1.gif",25),power(999999),hideTime(15000),hide(true)
+    :Plant(parent,":/res/GameRes/images/PotatoMine1.gif",25),power(2000),hideTime(12000),hide(true)
 {
 
     //单独的射程检测区域（仅用于检测僵尸，不影响物理碰撞）
