@@ -3,7 +3,7 @@
 #include <QDebug>
 
 Trophy::Trophy(QGraphicsObject *parent)
-    : MyObject(parent, "", Type::Other) // 传空路径，避免 MyObject 创建 movie
+    : MyObject(parent, "", Type::Other), isClicked(false) // 传空路径，避免 MyObject 创建 movie
 {
     if(!pixmap.load(":/res/GameRes/images/interface/trophy.png")){
         qDebug() << "Failed to load trophy.png";
@@ -11,6 +11,10 @@ Trophy::Trophy(QGraphicsObject *parent)
     }
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
+    
+    // 断开 MyObject 默认的 GameOver -> deleteLater 连接
+    // 因为 Trophy 的销毁将由 GameScene 的销毁来触发，避免重复删除或时序问题
+    disconnect(this, &MyObject::GameOver, this, &QGraphicsObject::deleteLater);
 }
 
 QRectF Trophy::boundingRect() const
@@ -43,12 +47,20 @@ Trophy::~Trophy()
 
 void Trophy::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (isClicked) return; // 防止重复点击
+
     if (event->button() == Qt::LeftButton) {
+        isClicked = true;
         // 点击后自动匀速放大
         // 使用 Animate 类，设置一个较大的目标缩放值和较长的持续时间
         // 例如：在 5 秒内放大到 20 倍
-        Animate(this).duration(AnimationType::Scale, 5000).scale(20.0).finish(AnimationType::Scale, [=](){
-            emit GameOver();
+        Animate(this).duration(AnimationType::Scale, 2000).scale(50.0).finish(AnimationType::Scale, [=](){
+            qDebug() << "结束";
+            // 使用 QTimer::singleShot 延后触发，避免在动画回调栈中直接销毁场景导致卡死
+            // 增加延时到 500ms，确保动画系统完全退出
+            QTimer::singleShot(500, this, [=](){
+                emit victoryAnimationFinished();
+            });
         });
         
         // 禁用再次点击，防止重复触发

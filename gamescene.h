@@ -135,6 +135,7 @@ public:
     //处理僵尸胜利
     void showZombieWon();
     //处理玩家胜利
+    void showPlayerWon(QPointF pos = QPointF(600, 300));
     void showPlayerWon();
     //场景元素过滤
     template<typename T>

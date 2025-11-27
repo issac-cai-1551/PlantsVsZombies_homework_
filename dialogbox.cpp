@@ -58,7 +58,7 @@ void DialogBox::PixInit(){
 GameScene* DialogBox::getGameScene(){
     GameScene *gameScene = dynamic_cast<GameScene*>(this->scene());
     if(!gameScene){
-        qDebug()<<"gameScene 转化失败，无法获得游戏场景数据";
+        // qDebug()<<"gameScene 转化失败，无法获得游戏场景数据";
     }//一般类实例初始化时还没加入场景，所以不能在这时候初始化gamescene,另外写函数
     return gameScene;
 }

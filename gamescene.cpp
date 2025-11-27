@@ -91,7 +91,7 @@ void GameScene::setNextWave(){
     //当全部结束，标志胜利
     if(currWave>=levelData->waveNum){
         emit GameSuccess(true);
-        showPlayerWon();
+        // showPlayerWon(); // 改为在最后一个僵尸死亡时触发
     }
 }
 void GameScene::settingInit(){
@@ -283,7 +283,7 @@ void GameScene::GameStart(){
     emit waveStart(0);
     if(flagMeter) flagMeter->showMeter();
 
-    // DEBUG: 10秒后直接触发胜利
+    //DEBUG: 10秒后直接触发胜利
     // QTimer::singleShot(10000, this, [=](){
     //     qDebug() << "DEBUG: Triggering player victory.";
     //     showPlayerWon();
@@ -461,6 +461,14 @@ void GameScene::ZombieGenerate(){
         connect(this,&GameScene::GameOver,zombie,&MyObject::GameOver);
         connect(this,&GameScene::GamePause,zombie,&MyObject::GamePause);
         
+        // 连接僵尸全部死亡信号
+        connect(zombie, &Zombie::noZombie, this, [=](QPointF pos){
+            // 只要是最后一波（或之后），且僵尸全部死亡，就胜利
+            if(currWave >= levelData->waveNum - 1){
+                showPlayerWon(pos);
+            }
+        });
+
         // 检查护眼模式
         if(dominator && dominator->isEyeProtectionOn()){
             zombie->setSlow(true);
@@ -527,6 +535,14 @@ void GameScene::ZombieGenerate(ZombieType zombieType,int row,int x){
         connect(this,&GameScene::GameOver,zombie,&MyObject::GameOver);//与消亡绑定
         connect(this,&GameScene::GamePause,zombie,&MyObject::GamePause);
 
+        // 连接僵尸全部死亡信号
+        connect(zombie, &Zombie::noZombie, this, [=](QPointF pos){
+            // 只要是最后一波（或之后），且僵尸全部死亡，就胜利
+            if(currWave >= levelData->waveNum - 1){
+                showPlayerWon(pos);
+            }
+        });
+
         // 检查护眼模式
         if(dominator && dominator->isEyeProtectionOn()){
             zombie->setSlow(true);
@@ -535,11 +551,13 @@ void GameScene::ZombieGenerate(ZombieType zombieType,int row,int x){
 }
 //根据当前波数生成僵尸
 void GameScene::ZombieGenerate(int currwave){
-    // 调试：第0波生成一个冰车僵尸
-    if(currwave == 0) {
+    if(currwave == 0)return;
+    // 第6波（即第7波）只生成一个冰车僵尸
+    if(currwave == 6) {
         qDebug() << "yes, I'm generating zomboni!";
         int row = QRandomGenerator::global()->bounded(0,5);
         ZombieGenerate(ZombieType::Zomboni, row, this->width()+200);
+        return; // 直接返回，不生成其他僵尸
     }
 
     QList<ZombieType> zombies = levelData->zombieExtract(currwave);
@@ -581,6 +599,7 @@ void GameScene::addItem(MyObject* item){
 }
 //析构函数
 GameScene::~GameScene(){
+    
     // delete shovel; // 场景会自动删除这些 item
     // delete gameBg;
 }
@@ -664,7 +683,7 @@ void GameScene::showZombieWon(){
     });
 }
 
-void GameScene::showPlayerWon(){
+void GameScene::showPlayerWon(QPointF pos){
     // 停止波次计时
     if(waveTimer->isActive()) waveTimer->stop();
 
@@ -683,17 +702,14 @@ void GameScene::showPlayerWon(){
 
     // 点击奖杯后播放一个动画，然后没有了。
 
-    // 居中显示
-    // View 的 sceneRect 是 (150, 0, 900, 600)。中心点 (600, 300)。
-    // 假设图片大小适中，居中显示
-    // 需要先获取 pixmap 大小，但 MyObject 默认是异步加载 movie 或者 path
-    // 这里我们假设 Trophy 构造函数里已经加载了图片或者会在 paint 时绘制
-    // 为了确保位置正确，我们可以手动设置一下位置，或者在 Trophy 里处理
-    // 由于 MyObject 使用 QMovie 或 path，我们需要确保它有尺寸
-
-    // 简单的居中逻辑，假设 Trophy 默认大小
-    trophy->setPos(600, 300);
+    // 设置位置为传入的 pos (最后一个僵尸死亡的位置)
+    trophy->setPos(pos);
     trophy->setZValue(5); // 确保在最上层
+
+    // 连接奖杯的胜利动画结束信号到 GameScene 的 GameOver
+    // 注意：不要连接 trophy->GameOver，因为 addItem 会自动连接 GameScene::GameOver -> trophy->GameOver
+    // 如果双向连接会导致死循环
+    connect(trophy, &Trophy::victoryAnimationFinished, this, &GameScene::GameOver);
 }
 
 //场景元素过滤
@@ -740,121 +756,4 @@ QList<Zombie*> GameScene::getZombiesRow(int r){
 //         qDebug() << "centerY" << coo->getY(coo->getRow(y));
 //     }
 //     QGraphicsScene::mousePressEvent(event);
-// }
-
-// 走了歪路，在gamescene.cpp里写了个数据来重置数据，后来一想直接在mainscene里重建gamescene就行了，没用了。
-// void GameScene::reset() {
-//     // 1. 重置变量
-//     currWave = 0;
-//     waveMoment = 0;
-//     moment = 0;
-//     qDebug() << "1";
-
-//     // 2. 停止计时器
-//     if(waveTimer->isActive()) waveTimer->stop();
-//     qDebug() << "2";
-
-
-//     // 3. 清理僵尸
-//     for(auto zombie : zombies) {
-//         if(zombie) {
-//             removeItem(zombie);
-//             delete zombie;
-//         }
-//     }
-//     zombies.clear();
-//     zombieRow.clear();
-//     qDebug() << "3";
-
-//     // 4. 清理植物
-//     for(auto plant : plants) {
-//         if(plant) {
-//             removeItem(plant);
-//             delete plant;
-//         }
-//     }
-//     plants.clear();
-//     plantRow.clear();
-//     qDebug() << "4";
-
-//     // 5. 清理子弹、阳光等其他动态物体
-//     // 由于没有专门的列表存储子弹和阳光，我们需要遍历场景中的所有 item
-//     QList<QGraphicsItem*> allItems = items();
-
-//     // 筛选出顶层 Item，避免因为删除了父 Item 导致子 Item 变成野指针，从而在后续循环中崩溃
-//     QList<QGraphicsItem*> topLevelItems;
-//     for(auto item : allItems) {
-//         if (item->parentItem() == nullptr) {
-//             topLevelItems.append(item);
-//         }
-//     }
-
-//     for(auto item : topLevelItems) {
-//         // 排除永久存在的对象
-//         if(item == shop || item == selectPlant || item == shovel || item == gameBg || item == dominator || item == start_proxy || item == cardDelete_proxy) {
-//             continue;
-//         }
-//         qDebug() << "5.1";
-//         // 排除 SettingsMenu (它可能不是 item，但以防万一)
-
-//         // 识别并删除 SunLight, Bullet, Mower, Trophy, ZombiesWon 图片等
-//         // 使用 dynamic_cast 或 type() 判断
-//         // 这里简单起见，假设 MyObject 子类除了上面排除的都需要清理
-
-//         // 注意：Mower 是在 map 中管理的，也需要清理并重新生成
-//         // Trophy, ZombiesWon 图片也需要清理
-
-//         // 简单判断：如果不是我们保留的几个指针，就删除
-
-//         // 如果 PlantArea 是永久的，需要保留。
-//         // 检查 PlantArea 是否在 plantareas 列表中
-//         // PlantAreaGenerate()函数中有连接，但是还是放在这里统一管理
-//         bool isPlantArea = false;
-//         for(auto pa : plantareas) {
-//             if(item == pa) {
-//                 isPlantArea = true;
-//                 break;
-//             }
-//         }
-//         qDebug() << "5.2";
-
-//         if(isPlantArea) {
-//             // 重置 PlantArea 状态
-//             PlantArea* pa = dynamic_cast<PlantArea*>(item);
-//             if(pa) pa->removePlant();
-//             continue;
-//         }
-//         qDebug() << "5.3";
-
-//         removeItem(item);
-//         delete item;
-
-//         qDebug() << "5.4";
-//     }
-//     qDebug() << "5";
-
-//     // 6.mowers清空列表
-//     mowers.clear();
-
-//     // 7. 重置商店和选择面板
-//     if(shop) {
-//         shop->clearCards();
-//         shop->setSun(50); // 初始阳光
-//     }
-//     if(selectPlant) selectPlant->reSet();
-//     qDebug() << "7";
-
-//     // 8. 重置背景位置
-//     if(gameBg) gameBg->setPos(-330, 0);
-//     qDebug() << "8";
-
-//     // 9. 重置视口 (如果被 ZombiesWon 移动了)
-//     QList<QGraphicsView *> views = this->views();
-//     if (!views.isEmpty()) {
-//         views.first()->setSceneRect(150, 0, 900, 600);
-//     }
-//     qDebug() << "9";
-
-//     // 10. 重新播放背景音乐 (如果需要)
-//     // playBGM("..."); // 需要知道当前关卡的 BGM
 // }
