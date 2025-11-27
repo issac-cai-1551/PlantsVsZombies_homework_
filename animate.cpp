@@ -13,11 +13,15 @@ Animate::Animate(MyObject* target):
         //仅在第一次target建立动画时绑定，后续无法绑定,管理哈希表，防止野指针
         QObject::connect(target,
                          &MyObject::needToDel,
+                         target, // 使用 target 作为 context，确保 target 销毁时自动断开
                          [=](){
                              moveAnim.remove(target);
                              scaleAnim.remove(target);
                              opacityAnim.remove(target);
-                             animation.remove(target);
+                             if(animation.contains(target)) {
+                                 delete animation[target]; // 显式删除 Animation 对象，防止内存泄漏
+                                 animation.remove(target);
+                             }
                          });
 
     }
@@ -201,7 +205,7 @@ Animate& Animate::finish(enum AnimationType animType,std::function<void(bool)> f
     QPropertyAnimation* animInst = getAnim(animType);
     if (animInst) {
         QObject::disconnect(animInst, &QPropertyAnimation::finished, nullptr, nullptr);
-        QObject::connect(animInst, &QPropertyAnimation::finished, animInst, [this, animType, func,animInst]() {
+        QObject::connect(animInst, &QPropertyAnimation::finished, animInst, [animType, func,animInst]() {
             QObject::disconnect(animInst, &QPropertyAnimation::finished, nullptr, nullptr);//一次性
             func(true);
         });

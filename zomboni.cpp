@@ -115,22 +115,11 @@ void Zomboni::dealDead(enum DieType dieType)
     // 停止移动
     stopMoving();
 
-    // 播放完动画后删除
-    // 连接 movieFinished 信号 (MyObject 会转发 QMovie::finished 信号)
-    // 使用 QMetaObject::Connection 防止多次连接
-    QMetaObject::Connection *conn = new QMetaObject::Connection;
-    *conn = connect(this, &MyObject::movieFinished, this, [=](){
-        disconnect(*conn);
-        delete conn;
-        deleteLater();
-    });
-
-    // 兜底策略，防止动画不触发 finished (例如循环动画或加载失败)
+    // 统一使用 Timer 来处理死亡后的清理，确保 zombieNum 正确减少
     QTimer::singleShot(2000, this, [=](){
-        if(conn) {
-            disconnect(*conn);
-            delete conn;
-        }
+        zombieNum--;
+        qDebug() << "Zomboni dead, zombieNum:" << zombieNum;
+        if(zombieNum==0)emit noZombie(this->pos());
         deleteLater();
     });
 }

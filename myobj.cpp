@@ -50,7 +50,7 @@ int MyObject::getFrameCnt(){
 GameScene* MyObject::getGameScene(){
     gameScene = dynamic_cast<GameScene*>(this->scene());
     if(!gameScene){
-        qDebug()<<"gameScene 转化失败，无法获得游戏场景数据";
+        // qDebug()<<"gameScene 转化失败，无法获得游戏场景数据";
     }//一般类实例初始化时还没加入场景，所以不能在这时候初始化gamescene,另外写函数
     return gameScene;
 }
@@ -129,8 +129,9 @@ void MyObject::ToCurrentGif(){
 MyObject::~MyObject(){
     emit needToDel();
     disconnect(this);
-    gameScene = getGameScene();
-    if(gameScene)gameScene->removeItem(this);
+    // QGraphicsItem 的析构函数会自动将其从场景中移除，无需手动调用 removeItem
+    // gameScene = getGameScene();
+    // if(gameScene)gameScene->removeItem(this);
     delete timer;
 }
 void MyObject::GamePause(){

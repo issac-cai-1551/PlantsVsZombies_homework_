@@ -39,7 +39,6 @@ Zombie::Zombie(QString objPath,
     
     //检测是否到达左侧阈值
     connect(IfwinTimer,&QTimer::timeout,this,[=](){
-        qDebug() << "zombie x:" << this->pos().x();
         if(this->pos().x() < 50 && !isDead){
             emit zombieSuccess();
             isDead = true; // 防止重复触发
@@ -138,6 +137,9 @@ void Zombie::dealDead(enum DieType dieType){
             disconnect(Conn);
             deleteLater();
         });
+        qDebug() << "zombieNum:" << zombieNum;
+        zombieNum--;
+        if(zombieNum==0)emit noZombie(this->pos());
     }
     else {
         QString deadGif = ":/res/GameRes/images/ZombieDie.gif";
@@ -166,15 +168,8 @@ void Zombie::dealDead(enum DieType dieType){
         }
         // 定时结束死亡动画
         QTimer::singleShot(2000, this, [=](){
-            //
             zombieNum--;
-            //处理gameScene中僵尸集合
-            // GameScene* gamescene = this->getGameScene();
-            // if(gamescene){
-            //     QList<Zombie*> zombies = gamescene->getZombies();
-            //     QMap<int,QList<Zombie*> > zombieRow = gamescene->getZombieRow();
-
-            // }
+            qDebug() << "zombieNum:" << zombieNum;
             if(zombieNum==0)emit noZombie(this->pos());
             deleteLater();
         });

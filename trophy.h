@@ -19,6 +19,12 @@ public:
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
+signals:
+    void victoryAnimationFinished();
+
+private:
+    bool isClicked = false;
 };
 
 #endif // TROPHY_H
